@@ -12,6 +12,10 @@ export function useVapi() {
     CALL_STATUS.INACTIVE,
   )
 
+  const [activeTranscript, setActiveTranscript] = useState('')
+
+  const [audioLevel, setAudioLevel] = useState(0)
+
   const registerListeners = () => {
     vapi.current.on('speech-start', () => {
       console.log('Speech has started')
@@ -33,8 +37,9 @@ export function useVapi() {
       setIsCallActive(CALL_STATUS.INACTIVE)
     })
 
-    vapi.current.on('volume-level', (volume) => {
+    vapi.current.on('volume-level', (volume: number) => {
       console.log(`Assistant volume level: ${volume}`)
+      setAudioLevel(volume)
     })
 
     // Function calls and transcripts will be sent via messages
@@ -78,6 +83,7 @@ export function useVapi() {
   return {
     isSpeechActive,
     isCallActive,
+    audioLevel,
     start,
     stop,
     toggleCall,

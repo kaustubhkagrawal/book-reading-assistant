@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/Button'
 import { CALL_STATUS } from '@/lib/constants'
 import { useVapi } from '@/lib/hooks/useVapi'
+import { cn } from '@/lib/utils'
+import { cva } from 'class-variance-authority'
 import { Inter } from 'next/font/google'
+import { ComponentProps, useEffect, useReducer, useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,6 +17,23 @@ const buttonTextConfig = {
 export default function Home() {
   const { isCallActive, toggleCall } = useVapi()
 
+  const [audioLevel, setAudioLevel] = useState(0.123)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAudioLevel(Math.random())
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
+  const shadowLevel = Math.floor(audioLevel / 0.1) as ComponentProps<
+    typeof Button
+  >['shadow']
+
+  console.log('audioLevel', audioLevel)
   return (
     <>
       <div className="flex flex-wrap flex-col items-center justify-center min-h-screen">
@@ -22,6 +42,8 @@ export default function Home() {
           variant={
             isCallActive === CALL_STATUS.ACTIVE ? 'destructive' : 'success'
           }
+          className={`w-20 h-20 rounded-full transition-all shadow-${shadowLevel}`}
+          shadow={shadowLevel}
           disabled={isCallActive === CALL_STATUS.LOADING}
           onClick={toggleCall}
         >
