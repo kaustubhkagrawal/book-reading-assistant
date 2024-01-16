@@ -1,8 +1,8 @@
+import { bookAssistant } from '@/assistants/book.assistant'
 import { envConfig } from '@/config/env.config'
 import Vapi from '@vapi-ai/web'
 import { useEffect, useRef, useState } from 'react'
 import { CALL_STATUS } from '../constants'
-import { assistantConfig } from '@/config/assistant.config'
 
 export function useVapi() {
   const vapi = useRef(new Vapi(envConfig.vapi.token))
@@ -54,7 +54,7 @@ export function useVapi() {
 
   const start = () => {
     setIsCallActive(CALL_STATUS.LOADING)
-    const response = vapi.current.start(assistantConfig)
+    const response = vapi.current.start(bookAssistant)
 
     // const response = vapi.current.start('cdf809b4-693f-4b8c-a9df-a793e5858739')
     response.then((res) => {
