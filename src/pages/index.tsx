@@ -12,17 +12,7 @@ const buttonTextConfig = {
 }
 
 export default function Home() {
-  const { isCallActive, start, stop } = useVapi()
-
-  const toggleCall = () => {
-    if (isCallActive == CALL_STATUS.ACTIVE) {
-      console.log('stop')
-      stop()
-    } else {
-      console.log('start')
-      start()
-    }
-  }
+  const { isCallActive, toggleCall } = useVapi()
 
   return (
     <>

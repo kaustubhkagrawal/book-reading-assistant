@@ -2,6 +2,7 @@ import { envConfig } from '@/config/env.config'
 import Vapi from '@vapi-ai/web'
 import { useEffect, useRef, useState } from 'react'
 import { CALL_STATUS } from '../constants'
+import { assistantConfig } from '@/config/assistant.config'
 
 export function useVapi() {
   const vapi = useRef(new Vapi(envConfig.vapi.token))
@@ -42,6 +43,7 @@ export function useVapi() {
     })
 
     vapi.current.on('error', (e) => {
+      setIsCallActive(CALL_STATUS.INACTIVE)
       console.error(e)
     })
   }
@@ -52,20 +54,11 @@ export function useVapi() {
 
   const start = () => {
     setIsCallActive(CALL_STATUS.LOADING)
-    console.log('starter')
-    vapi.current.start({
-      name: 'Testing',
-      model: {
-        provider: 'openai',
-        model: 'gpt-3.5-turbo',
-        systemPrompt:
-          'You are an AI Assistant who can help user with their order placement and delivery tracking.',
-        temperature: 0.7,
-      },
-      voice: {
-        provider: '11labs',
-        voiceId: 'paula',
-      },
+    const response = vapi.current.start(assistantConfig)
+
+    // const response = vapi.current.start('cdf809b4-693f-4b8c-a9df-a793e5858739')
+    response.then((res) => {
+      console.log({ res })
     })
   }
 
@@ -74,10 +67,19 @@ export function useVapi() {
     vapi.current.stop()
   }
 
+  const toggleCall = () => {
+    if (isCallActive == CALL_STATUS.ACTIVE) {
+      stop()
+    } else {
+      start()
+    }
+  }
+
   return {
     isSpeechActive,
     isCallActive,
     start,
     stop,
+    toggleCall,
   }
 }
