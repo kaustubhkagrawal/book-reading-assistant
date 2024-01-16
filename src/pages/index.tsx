@@ -1,22 +1,27 @@
 import { Button } from '@/components/ui/Button'
+import { CALL_STATUS } from '@/lib/constants'
 import { useVapi } from '@/lib/hooks/useVapi'
 import { Inter } from 'next/font/google'
-import { useState } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
-  const [activeCallStatus, setActiveCallStatus] = useState(false)
+const buttonTextConfig = {
+  [CALL_STATUS.ACTIVE]: 'Stop',
+  [CALL_STATUS.LOADING]: 'Loading...',
+  [CALL_STATUS.INACTIVE]: 'Start',
+}
 
-  const { start, stop } = useVapi()
+export default function Home() {
+  const { isCallActive, start, stop } = useVapi()
 
   const toggleCall = () => {
-    if (activeCallStatus) {
+    if (isCallActive == CALL_STATUS.ACTIVE) {
+      console.log('stop')
       stop()
     } else {
+      console.log('start')
       start()
     }
-    setActiveCallStatus((status) => !status)
   }
 
   return (
@@ -24,10 +29,13 @@ export default function Home() {
       <div className="flex flex-wrap flex-col items-center justify-center min-h-screen">
         <h2 className="text-center w-full text-3xl pb-3">Playground</h2>
         <Button
-          variant={activeCallStatus ? 'destructive' : 'success'}
+          variant={
+            isCallActive === CALL_STATUS.ACTIVE ? 'destructive' : 'success'
+          }
+          disabled={isCallActive === CALL_STATUS.LOADING}
           onClick={toggleCall}
         >
-          {activeCallStatus ? 'Stop' : 'Start'}
+          {buttonTextConfig[isCallActive]}
         </Button>
       </div>
     </>
