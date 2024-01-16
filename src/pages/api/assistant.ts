@@ -16,7 +16,9 @@ export default function handler(
     const { type = 'function-call', functionCall = {}, call } = message
     console.log('callObj', call)
 
-    res.status(201).json({ data: functionCall?.parameters })
+    if (type === 'function-call') {
+      res.status(201).json({ data: functionCall?.parameters })
+    }
 
     res.status(201).json({})
   }
