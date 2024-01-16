@@ -15,7 +15,7 @@ export default async function handler(
       const { message } = req.body
 
       const { type = 'function-call', functionCall = {}, call } = message
-      console.log('callObj', message)
+      console.log('payload message', message)
 
       if (type === 'function-call') {
         res.status(201).json({ data: functionCall?.parameters })
