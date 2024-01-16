@@ -18,14 +18,14 @@ export default async function handler(
       console.log('payload message', message)
 
       if (type === 'function-call') {
-        res.status(201).json({ data: functionCall?.parameters })
+        return res.status(201).json({ data: functionCall?.parameters })
       }
 
-      res.status(201).json({})
+      return res.status(201).json({})
     }
 
-    res.status(404).json({ message: 'Not Found' })
+    return res.status(404).json({ message: 'Not Found' })
   } catch (err) {
-    res.status(500)
+    return res.status(500).json({ message: 'Internal Server Error' })
   }
 }
