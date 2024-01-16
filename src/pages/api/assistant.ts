@@ -6,22 +6,26 @@ type Data = {
   data?: any
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
 ) {
-  if (req.method === 'POST') {
-    const { message } = req.body
+  try {
+    if (req.method === 'POST') {
+      const { message } = req.body
 
-    const { type = 'function-call', functionCall = {}, call } = message
-    console.log('callObj', call)
+      const { type = 'function-call', functionCall = {}, call } = message
+      console.log('callObj', message)
 
-    if (type === 'function-call') {
-      res.status(201).json({ data: functionCall?.parameters })
+      if (type === 'function-call') {
+        res.status(201).json({ data: functionCall?.parameters })
+      }
+
+      res.status(201).json({})
     }
 
-    res.status(201).json({})
+    res.status(404).json({ message: 'Not Found' })
+  } catch (err) {
+    res.status(500)
   }
-
-  res.status(404).json({ message: 'Not Found' })
 }
