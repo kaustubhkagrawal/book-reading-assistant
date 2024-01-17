@@ -1,8 +1,12 @@
 import { Button } from '@/components/ui/Button'
+import FileUpload from '@/components/ui/FileUpload'
 import { CALL_STATUS } from '@/lib/constants'
 import { useVapi } from '@/lib/hooks/useVapi'
 import { Inter } from 'next/font/google'
 import { ComponentProps, useEffect, useState } from 'react'
+import axios from 'axios'
+import { Controller, useForm } from 'react-hook-form'
+import { envConfig } from '@/config/env.config'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,6 +18,30 @@ const buttonTextConfig = {
 
 export default function Home() {
   const { isCallActive, audioLevel, activeTranscript, toggleCall } = useVapi()
+
+  const { control, register, handleSubmit } = useForm()
+
+  const onSubmit = async (data: any) => {
+    const formData = new FormData()
+    formData.append('file', data.file)
+
+    try {
+      const response = await axios.post(
+        `${envConfig.ragUrl}/documents/upload`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+      console.log('File uploaded successfully: ', response.data)
+      // Handle the response as needed
+    } catch (error) {
+      console.error('Error uploading file: ', error)
+      // Handle the error as needed
+    }
+  }
 
   // const [audioLevel, setAudioLevel] = useState(0.123)
 
@@ -47,6 +75,16 @@ export default function Home() {
         <div className="p-4 max-w-96 text-center text-3xl text-cyan-900">
           {activeTranscript?.transcript ?? ''}
         </div>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h1>File Upload</h1>
+          <Controller
+            name="file"
+            control={control}
+            render={({ field }) => <FileUpload {...field} />}
+          />
+          <Button type="submit">Upload</Button>
+        </form>
         <Button
           variant={
             isCallActive === CALL_STATUS.ACTIVE ? 'destructive' : 'success'

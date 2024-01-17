@@ -31,5 +31,5 @@ export const bookAssistant: CreateAssistantDTO = {
   },
   firstMessage:
     "Hi, I'm your Book reading assistant. You can ask me any question on Book '20000 Leagues Under the Sea'",
-  endCallFunctionEnabled: true,
+  // endCallFunctionEnabled: true,
 }
