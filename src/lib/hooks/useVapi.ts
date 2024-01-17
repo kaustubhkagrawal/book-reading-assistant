@@ -4,6 +4,13 @@ import Vapi from '@vapi-ai/web'
 import { useEffect, useRef, useState } from 'react'
 import { CALL_STATUS } from '../constants'
 
+interface TranscriptMessage {
+  transcript: string
+  type: 'transcript'
+  transcriptType: 'partial' | 'final'
+  role: 'assistant' | 'user'
+}
+
 export function useVapi() {
   const vapi = useRef(new Vapi(envConfig.vapi.token))
 
@@ -12,7 +19,8 @@ export function useVapi() {
     CALL_STATUS.INACTIVE,
   )
 
-  const [activeTranscript, setActiveTranscript] = useState('')
+  const [activeTranscript, setActiveTranscript] =
+    useState<TranscriptMessage | null>(null)
 
   const [audioLevel, setAudioLevel] = useState(0)
 
@@ -45,6 +53,9 @@ export function useVapi() {
     // Function calls and transcripts will be sent via messages
     vapi.current.on('message', (message) => {
       console.log(message)
+      if (message.type === 'transcript') {
+        setActiveTranscript(message)
+      }
     })
 
     vapi.current.on('error', (e) => {
@@ -84,6 +95,7 @@ export function useVapi() {
     isSpeechActive,
     isCallActive,
     audioLevel,
+    activeTranscript,
     start,
     stop,
     toggleCall,
