@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { ZoomIn, ZoomOut, ChevronUp, ChevronDown } from 'lucide-react'
 
-import { zoomLevels } from '../../hooks/usePdf'
+import { zoomLevels } from '../../lib/hooks/usePdf'
 import { PdfDocument } from '../../types/document.type'
 import { borderColors } from '../../utils/colors'
 
@@ -67,9 +67,9 @@ export const PDFOptionsBar: React.FC<PDFOptionsBarProps> = ({
 
   return (
     <div
-      className={`flex h-[44px] w-1/2 items-center justify-between border-b-2 `}
+      className={`flex h-[44px] w-full items-center justify-between border-b-2 bg-white`}
     >
-      <div className="ml-3 flex w-1/2 items-center justify-start ">
+      <div className="ml-3 flex w-full items-center justify-start ">
         <div
           className={`flex items-center justify-center border-l-4 pl-2 ${
             borderColors[file.color]

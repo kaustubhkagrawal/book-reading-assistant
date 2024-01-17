@@ -1,9 +1,7 @@
-import * as React from 'react'
-import dynamic from 'next/dynamic'
+import { VapiButton } from '@/components/widgets/Conversation/VapiButton'
 import { ViewPdf } from '../components/pdfViewer/ViewPdf'
-import { DocumentType } from '../types/document.type'
+import { PdfFocusProvider } from '../lib/context/pdf'
 import { DocumentColorEnum } from '../utils/colors'
-import { PdfFocusProvider } from '../context/pdf'
 
 // const PdfViewerComp = dynamic(() => import('../components/pdfViewer/index'), {
 //   ssr: false,
@@ -12,16 +10,19 @@ import { PdfFocusProvider } from '../context/pdf'
 const PdfChat = () => {
   // return <PdfViewerComp />
   return (
-    <PdfFocusProvider>
-      <ViewPdf
-        file={{
-          url: 'https://arxiv.org/pdf/2401.02412.pdf',
-          id: 'id_1',
-          color: DocumentColorEnum.blue,
-          fullName: 'Testing pdf demo',
-        }}
-      />
-    </PdfFocusProvider>
+    <div className="flex">
+      <PdfFocusProvider>
+        <ViewPdf
+          file={{
+            url: 'https://arxiv.org/pdf/2401.02412.pdf',
+            id: 'id_1',
+            color: DocumentColorEnum.blue,
+            fullName: 'Testing pdf demo',
+          }}
+        />
+      </PdfFocusProvider>
+      <VapiButton />
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import usePDFViewer from '../../hooks/usePdf'
+import usePDFViewer from '../../lib/hooks/usePdf'
 import { PdfDocument } from '../../types/document.type'
 import { PDFOptionsBar } from './OptionsBar'
 import MemoizedVirtualizedPDF from './VirtualizedPdf'
