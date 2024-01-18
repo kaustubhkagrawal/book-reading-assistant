@@ -1,18 +1,16 @@
+import { createAssistant } from '@/apis/vapi.api'
 import { bookAssistant } from '@/assistants/book.assistant'
 import { envConfig } from '@/config/env.config'
-import Vapi from '@vapi-ai/web'
-import { useEffect, useReducer, useRef, useState } from 'react'
-import { CALL_STATUS } from '../constants'
 import {
   Message,
   MessageTypeEnum,
   TranscriptMessage,
   TranscriptMessageTypeEnum,
 } from '@/types/conversation.type'
-import debounce from 'lodash.debounce'
+import Vapi from '@vapi-ai/web'
+import { useEffect, useReducer, useState } from 'react'
+import { CALL_STATUS } from '../constants'
 import { MessageActionTypeEnum, useMessages } from './useMessages'
-import axios from 'axios'
-import { createAssistant } from '@/apis/vapi.api'
 
 interface useVapiProps {
   onCallStart: (vapi: Vapi) => void
@@ -26,6 +24,7 @@ export function useVapi({ onCallStart }: useVapiProps) {
     CALL_STATUS.INACTIVE,
   )
 
+  const [assistantId, setAssistantId] = useState('')
   const [messages, dispatch] = useReducer(useMessages, [])
 
   const [activeTranscript, setActiveTranscript] =
@@ -69,7 +68,6 @@ export function useVapi({ onCallStart }: useVapiProps) {
           type: MessageActionTypeEnum.UPDATE_LAST_MESSAGE,
           payload: message,
         })
-        // debounce(fn, 100)
       }
     }
 

@@ -2,13 +2,12 @@ import { Button } from '@/components/ui/Button'
 import { CALL_STATUS } from '@/lib/constants'
 import { useVapi } from '@/lib/hooks/useVapi'
 import Lottie from 'lottie-react'
-import { useState } from 'react'
 
+import { cn } from '@/lib/utils/utils'
+import { ClassValue } from 'class-variance-authority/types'
 import ActiveIcon from '../../../lottie-icons/active_icon.json'
 import InactiveIcon from '../../../lottie-icons/inactive_icon.json'
 import LoadingIcon from '../../../lottie-icons/loading_icon.json'
-import { cn } from '@/lib/utils'
-import { ClassValue } from 'class-variance-authority/types'
 
 const ICONS_DATA = {
   [CALL_STATUS.ACTIVE]: ActiveIcon,

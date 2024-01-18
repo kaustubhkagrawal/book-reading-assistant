@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/Button'
-import { usePdfFocus } from '@/lib/context/pdf'
+import { usePdfFocus } from '@/lib/context/PdfContext'
 import { FunctionCallResultMessage } from '@/types/conversation.type'
 
 interface ConversationMessageProps {

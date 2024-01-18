@@ -1,5 +1,4 @@
-import { DocumentColorEnum } from '../utils/colors'
-import { object } from 'zod'
+import { DocumentColorEnum } from '../lib/utils/colors'
 
 export interface PdfDocument {
   id: string

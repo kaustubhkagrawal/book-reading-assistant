@@ -1,17 +1,12 @@
 import { ViewPdf } from '@/components/pdfViewer/ViewPdf'
 import { Conversation } from '@/components/widgets/Conversation/Conversation'
-import { VapiButton } from '@/components/widgets/Conversation/VapiButton'
 import { envConfig } from '@/config/env.config'
-import { PdfFocusProvider } from '@/lib/context/pdf'
-import { getFilenameFromUrl } from '@/lib/utils'
-import { DocumentColorEnum } from '@/utils/colors'
+import { PdfFocusProvider } from '@/lib/context/PdfContext'
+import { DocumentColorEnum } from '@/lib/utils/colors'
+import { getFilenameFromUrl } from '@/lib/utils/utils'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
-// const PdfViewerComp = dynamic(() => import('../components/pdfViewer/index'), {
-//   ssr: false,
-// })
 
 const DocumentConversation = () => {
   const [document, setDocument] = useState<any>(null)
@@ -31,7 +26,6 @@ const DocumentConversation = () => {
         .then((response) => setDocument(response.data))
     }
   }, [docId])
-  // return <PdfViewerComp />
 
   if (!document) {
     return <span>Loading...</span>
