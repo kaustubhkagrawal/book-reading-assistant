@@ -1,8 +1,3 @@
-import React, { memo, useCallback } from 'react'
-import { VapiButton } from './VapiButton'
-import { useVapi } from '@/lib/hooks/useVapi'
-import Vapi from '@vapi-ai/web'
-import { ScrollArea } from '@/components/ui/ScrollArea'
 import {
   Card,
   CardContent,
@@ -11,8 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/Card'
-import { MessageRoleEnum, MessageTypeEnum } from '@/types/conversation.type'
-import ConversationMessage from './Message'
+import { ScrollArea } from '@/components/ui/ScrollArea'
+import { useVapi } from '@/lib/hooks/useVapi'
+import Vapi from '@vapi-ai/web'
+import { memo, useCallback } from 'react'
+import { MessageList } from './MessageList'
+import { VapiButton } from './VapiButton'
 
 interface ConversationProps {
   docId: string
@@ -47,26 +46,10 @@ export const Conversation = memo(({ docId, ...props }: ConversationProps) => {
       <CardContent>
         <ScrollArea className="h-[600px] flex flex-1 p-4">
           <div className="flex-1 flex-col">
-            {messages.map((message, index) =>
-              message.type === MessageTypeEnum.TRANSCRIPT ? (
-                <ConversationMessage
-                  message={
-                    activeTranscript && activeTranscript.role === message.role
-                      ? {
-                          ...message,
-                          transcript:
-                            message.transcript + activeTranscript.transcript,
-                        }
-                      : message
-                  }
-                  key={message.type + message?.role + index}
-                />
-              ) : null,
-            )}
-            {activeTranscript &&
-            activeTranscript.role !== messages[messages.length - 1]?.role ? (
-              <ConversationMessage message={activeTranscript} />
-            ) : null}
+            <MessageList
+              messages={messages}
+              activeTranscript={activeTranscript}
+            />
           </div>
         </ScrollArea>
       </CardContent>

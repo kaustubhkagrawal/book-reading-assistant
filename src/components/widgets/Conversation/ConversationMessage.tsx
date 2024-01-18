@@ -1,18 +1,10 @@
-import { Avatar } from '@/components/ui/Avatar'
-import {
-  Message,
-  MessageRoleEnum,
-  TranscriptMessage,
-} from '@/types/conversation.type'
-import React from 'react'
+import { MessageRoleEnum, TranscriptMessage } from '@/types/conversation.type'
 
 interface ConversationMessageProps {
   message: TranscriptMessage
 }
 
-export default function ConversationMessage({
-  message,
-}: ConversationMessageProps) {
+export function ConversationMessage({ message }: ConversationMessageProps) {
   return (
     <div
       className={`flex w-4/5 text-sm mb-4 justify-end text-[#1a0400] font-medium ${
