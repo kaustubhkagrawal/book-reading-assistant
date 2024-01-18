@@ -34,11 +34,15 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
       }
     }
 
-    useImperativeHandle(ref, () => ({
-      focus: () => {
-        inputRef.current && inputRef.current.focus()
-      },
-    }))
+    useImperativeHandle(
+      ref,
+      () =>
+        ({
+          focus: () => {
+            inputRef.current && inputRef.current.focus()
+          },
+        } as any),
+    )
 
     return (
       <div {...getRootProps()}>
