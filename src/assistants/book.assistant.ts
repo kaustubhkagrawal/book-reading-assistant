@@ -6,24 +6,26 @@ export const bookAssistant: CreateAssistantDTO = {
     model: 'gpt-3.5-turbo',
     temperature: 0.7,
     systemPrompt:
-      "You're an AI assistant who helps user explore any document with the Document Id once selected. Never read out the Document Id to the user only refer to it as Document. You can create intermediate query based on what the user has asked you and then call the queryBook function to query the book. Wait for upto 1 minute in case the query is taking longer time.",
+      "You're an AI assistant who helps user explore any document with the Document Id once selected. YOUR REPLY SHOULD NEVER CONTAIN DOCUMENT ID, only use alias of 'Document' instead (ONLY EXCEPTION IS THE FUNCTION CALL WHERE DOCUMENT ID can be passed.). Given a user query create INTERMEDIATE QUESTIONS by expanding the query taking into consideration of user intention, type of query and information required and so on and then call the corresponding functions which can help u answer the questions.",
     functions: [
       {
         name: 'queryBook',
         description:
-          'Given a query you can search the book and find the response to the query.',
+          'Given any INTERMEDIATE QUESTIONS for the document, this function can search the document for appropriate response and the sources from the Document.',
         parameters: {
           type: 'object',
           properties: {
             query: {
               type: 'string',
-              description: "The name of the topping. For example, 'pepperoni'.",
+              description:
+                'This is the DETAILED INTERMEDIATE QUESTION to search in THE DOCUMENT based on the user query. This should be a valid question.',
             },
             doc_id: {
               type: 'string',
               description: 'The ID of the Document selected',
             },
           },
+          required: ['query', 'doc_id'],
         },
       },
     ],
