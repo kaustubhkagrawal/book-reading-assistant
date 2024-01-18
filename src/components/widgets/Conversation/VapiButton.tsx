@@ -7,6 +7,8 @@ import { useState } from 'react'
 import ActiveIcon from '../../../lottie-icons/active_icon.json'
 import InactiveIcon from '../../../lottie-icons/inactive_icon.json'
 import LoadingIcon from '../../../lottie-icons/loading_icon.json'
+import { cn } from '@/lib/utils'
+import { ClassValue } from 'class-variance-authority/types'
 
 const ICONS_DATA = {
   [CALL_STATUS.ACTIVE]: ActiveIcon,
@@ -21,24 +23,29 @@ const buttonTextConfig = {
 }
 
 interface VapiButtonProps
-  extends Pick<ReturnType<typeof useVapi>, 'isCallActive' | 'toggleCall'> {}
+  extends Pick<ReturnType<typeof useVapi>, 'isCallActive' | 'toggleCall'> {
+  className?: ClassValue
+}
 
 export function VapiButton(props: VapiButtonProps) {
-  const { isCallActive, toggleCall } = props
+  const { isCallActive, toggleCall, ...restProps } = props
 
   return (
     <Button
       asChild
-      className="rounded-full cursor-pointer group p-10 transition-all bg-transparent hover:bg-transparent"
+      className={cn([
+        'rounded-full cursor-pointer group transition-all bg-transparent hover:bg-transparent p-0',
+        restProps.className,
+      ])}
       disabled={isCallActive === CALL_STATUS.LOADING}
       onClick={toggleCall}
     >
       <Lottie
         animationData={ICONS_DATA[isCallActive]}
         style={{
-          width: isCallActive === CALL_STATUS.LOADING ? 150 : 250,
-          height: isCallActive === CALL_STATUS.LOADING ? 150 : 250,
-          margin: isCallActive === CALL_STATUS.LOADING ? 50 : 0,
+          width: isCallActive === CALL_STATUS.LOADING ? 70 : 150,
+          height: isCallActive === CALL_STATUS.LOADING ? 70 : 150,
+          margin: isCallActive === CALL_STATUS.LOADING ? 40 : 0,
         }}
       />
     </Button>

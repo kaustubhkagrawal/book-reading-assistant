@@ -1,83 +1,107 @@
 import { bookAssistant } from '@/assistants/book.assistant'
 import { envConfig } from '@/config/env.config'
 import Vapi from '@vapi-ai/web'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import { CALL_STATUS } from '../constants'
-
-interface TranscriptMessage {
-  transcript: string
-  type: 'transcript'
-  transcriptType: 'partial' | 'final'
-  role: 'assistant' | 'user'
-}
+import {
+  Message,
+  MessageTypeEnum,
+  TranscriptMessage,
+  TranscriptMessageTypeEnum,
+} from '@/types/conversation.type'
+import debounce from 'lodash.debounce'
+import { MessageActionTypeEnum, useMessages } from './useMessages'
 
 interface useVapiProps {
   onCallStart: (vapi: Vapi) => void
 }
 
-export function useVapi({ onCallStart }: useVapiProps) {
-  const vapi = useRef(new Vapi(envConfig.vapi.token))
+const vapi = new Vapi(envConfig.vapi.token)
 
+export function useVapi({ onCallStart }: useVapiProps) {
   const [isSpeechActive, setIsSpeechActive] = useState(false)
   const [isCallActive, setIsCallActive] = useState<CALL_STATUS>(
     CALL_STATUS.INACTIVE,
   )
+
+  // const [messages, setMessages] = useState<Message[]>([])
+  const [messages, dispatch] = useReducer(useMessages, [])
 
   const [activeTranscript, setActiveTranscript] =
     useState<TranscriptMessage | null>(null)
 
   const [audioLevel, setAudioLevel] = useState(0)
 
-  const registerListeners = () => {
-    vapi.current.on('speech-start', () => {
-      console.log('Speech has started')
-      setIsSpeechActive(true)
-    })
-
-    vapi.current.on('speech-end', () => {
+  useEffect(() => {
+    const onSpeechStart = () => setIsSpeechActive(true)
+    const onSpeechEnd = () => {
       console.log('Speech has ended')
       setIsSpeechActive(false)
-    })
+    }
 
-    vapi.current.on('call-start', () => {
+    const onCallStartHandler = () => {
       console.log('Call has started')
       setIsCallActive(CALL_STATUS.ACTIVE)
-      onCallStart(vapi.current)
-    })
+      onCallStart(vapi)
+    }
 
-    vapi.current.on('call-end', () => {
+    const onCallEnd = () => {
       console.log('Call has stopped')
       setIsCallActive(CALL_STATUS.INACTIVE)
-    })
+    }
 
-    vapi.current.on('volume-level', (volume: number) => {
+    const onVolumeLevel = (volume: number) => {
       console.log(`Assistant volume level: ${volume}`)
       setAudioLevel(volume)
-    })
+    }
 
-    // Function calls and transcripts will be sent via messages
-    vapi.current.on('message', (message) => {
-      console.log(message)
-      if (message.type === 'transcript') {
+    const onMessageUpdate = (message: Message) => {
+      console.log('message', message)
+      if (
+        message.type === MessageTypeEnum.TRANSCRIPT &&
+        message.transcriptType === TranscriptMessageTypeEnum.PARTIAL
+      ) {
         setActiveTranscript(message)
+      } else {
+        setActiveTranscript(null)
+        dispatch({
+          type: MessageActionTypeEnum.UPDATE_LAST_MESSAGE,
+          payload: message,
+        })
+        // debounce(fn, 100)
       }
-    })
+    }
 
-    vapi.current.on('error', (e) => {
+    const onError = (e: any) => {
       setIsCallActive(CALL_STATUS.INACTIVE)
       console.error(e)
-    })
-  }
+    }
 
-  useEffect(() => {
-    registerListeners()
-  }, [])
+    vapi.on('speech-start', onSpeechStart)
+    vapi.on('speech-end', onSpeechEnd)
+    vapi.on('call-start', onCallStartHandler)
+    vapi.on('call-end', onCallEnd)
+    vapi.on('volume-level', onVolumeLevel)
+    vapi.on('message', onMessageUpdate)
+    vapi.on('error', onError)
+
+    return () => {
+      vapi.off('speech-start', onSpeechStart)
+      vapi.off('speech-end', onSpeechEnd)
+      vapi.off('call-start', onCallStartHandler)
+      vapi.off('call-end', onCallEnd)
+      vapi.off('volume-level', onVolumeLevel)
+      vapi.off('message', onMessageUpdate)
+      vapi.off('error', onError)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onCallStart])
 
   const start = () => {
     setIsCallActive(CALL_STATUS.LOADING)
-    const response = vapi.current.start(bookAssistant)
+    const response = vapi.start(bookAssistant)
 
-    // const response = vapi.current.start('cdf809b4-693f-4b8c-a9df-a793e5858739')
+    // const response = vapi.start('cdf809b4-693f-4b8c-a9df-a793e5858739')
     response.then((res) => {
       console.log({ res })
     })
@@ -85,7 +109,7 @@ export function useVapi({ onCallStart }: useVapiProps) {
 
   const stop = () => {
     setIsCallActive(CALL_STATUS.LOADING)
-    vapi.current.stop()
+    vapi.stop()
   }
 
   const toggleCall = () => {
@@ -101,6 +125,7 @@ export function useVapi({ onCallStart }: useVapiProps) {
     isCallActive,
     audioLevel,
     activeTranscript,
+    messages,
     start,
     stop,
     toggleCall,
