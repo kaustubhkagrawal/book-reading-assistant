@@ -20,42 +20,25 @@ const buttonTextConfig = {
   [CALL_STATUS.INACTIVE]: 'Start',
 }
 
-export function VapiButton() {
-  const { isCallActive, audioLevel, activeTranscript, toggleCall } = useVapi()
-  const [buttonState, setButtonState] = useState<CALL_STATUS>(
-    CALL_STATUS.INACTIVE,
-  )
+interface VapiButtonProps
+  extends Pick<ReturnType<typeof useVapi>, 'isCallActive' | 'toggleCall'> {}
 
-  const onClick = () => {
-    const preState = buttonState
-    const timeOut = setTimeout(() => {
-      setButtonState(
-        preState === CALL_STATUS.ACTIVE
-          ? CALL_STATUS.INACTIVE
-          : CALL_STATUS.ACTIVE,
-      )
-    }, 2000)
+export function VapiButton(props: VapiButtonProps) {
+  const { isCallActive, toggleCall } = props
 
-    if (CALL_STATUS.LOADING !== buttonState) {
-      setButtonState(CALL_STATUS.LOADING)
-    } else {
-      clearTimeout(timeOut)
-      setButtonState(CALL_STATUS.INACTIVE)
-    }
-  }
   return (
     <Button
       asChild
       className="rounded-full cursor-pointer group p-10 transition-all bg-transparent hover:bg-transparent"
       disabled={isCallActive === CALL_STATUS.LOADING}
-      onClick={onClick}
+      onClick={toggleCall}
     >
       <Lottie
-        animationData={ICONS_DATA[buttonState]}
+        animationData={ICONS_DATA[isCallActive]}
         style={{
-          width: buttonState === CALL_STATUS.LOADING ? 150 : 250,
-          height: buttonState === CALL_STATUS.LOADING ? 150 : 250,
-          margin: buttonState === CALL_STATUS.LOADING ? 50 : 0,
+          width: isCallActive === CALL_STATUS.LOADING ? 150 : 250,
+          height: isCallActive === CALL_STATUS.LOADING ? 150 : 250,
+          margin: isCallActive === CALL_STATUS.LOADING ? 50 : 0,
         }}
       />
     </Button>

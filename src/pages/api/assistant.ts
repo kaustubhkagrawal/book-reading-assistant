@@ -27,14 +27,12 @@ export default async function handler(
 
       if (type === 'function-call') {
         if (functionCall?.name === 'queryBook') {
-          const { query } = functionCall?.parameters
+          const parameters = functionCall?.parameters
 
-          if (query) {
+          if (parameters?.query) {
             const response = await axios.post<{ response: string }>(
               `${ragUrl}/query`,
-              {
-                query,
-              },
+              parameters,
             )
 
             console.log('response, ', response.data)

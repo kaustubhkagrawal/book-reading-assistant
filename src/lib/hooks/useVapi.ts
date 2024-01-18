@@ -11,7 +11,11 @@ interface TranscriptMessage {
   role: 'assistant' | 'user'
 }
 
-export function useVapi() {
+interface useVapiProps {
+  onCallStart: (vapi: Vapi) => void
+}
+
+export function useVapi({ onCallStart }: useVapiProps) {
   const vapi = useRef(new Vapi(envConfig.vapi.token))
 
   const [isSpeechActive, setIsSpeechActive] = useState(false)
@@ -38,6 +42,7 @@ export function useVapi() {
     vapi.current.on('call-start', () => {
       console.log('Call has started')
       setIsCallActive(CALL_STATUS.ACTIVE)
+      onCallStart(vapi.current)
     })
 
     vapi.current.on('call-end', () => {

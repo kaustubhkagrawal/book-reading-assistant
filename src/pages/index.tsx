@@ -7,12 +7,15 @@ import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { FileText, Loader, Loader2, X } from 'lucide-react'
+import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const [isIndexingDone, setIsIndexingDone] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const router = useRouter()
 
   const { control, watch, setValue, handleSubmit } = useForm()
 
@@ -34,19 +37,21 @@ export default function Home() {
 
       const document = response.data
 
-      try {
-        const response = await axios.post(
-          `${envConfig.ragUrl}/documents/index`,
-          document,
-        )
-        console.log('response', response.data)
-        setIsIndexingDone(true)
-        setIsLoading(false)
-      } catch (error) {
-        console.error('Error in indexing the file', error)
-        setIsIndexingDone(false)
-        setIsLoading(false)
-      }
+      if (document.url)
+        try {
+          const response = await axios.post(
+            `${envConfig.ragUrl}/documents/index`,
+            document,
+          )
+          console.log('response', response.data)
+          setIsIndexingDone(true)
+          setIsLoading(false)
+          router.push(`/document/${document.id}`)
+        } catch (error) {
+          console.error('Error in indexing the file', error)
+          setIsIndexingDone(false)
+          setIsLoading(false)
+        }
       // Handle the response as needed
     } catch (error) {
       console.error('Error uploading file: ', error)
