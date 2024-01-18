@@ -35,6 +35,8 @@ export default async function handler(
               parameters,
             )
 
+            console.log({ parameters })
+
             console.log('response, ', response.data)
 
             return res.status(201).json(response.data)
