@@ -30,7 +30,7 @@ export default async function handler(
           if (parameters?.query) {
             const response = await axios.post<{ response: string }>(
               `${ragUrl}/query`,
-              { query: parameters?.query, assistant_id: call.id },
+              { query: parameters?.query, assistant_id: call.assistantId },
             )
 
             console.log({ parameters })
