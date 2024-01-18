@@ -17,6 +17,7 @@ const buttonTextConfig = {
 }
 
 export default function Home() {
+  const [isIndexingDone, setIsIndexingDone] = useState(false)
   const { isCallActive, audioLevel, activeTranscript, toggleCall } = useVapi()
 
   const { control, register, handleSubmit } = useForm()
@@ -36,6 +37,20 @@ export default function Home() {
         },
       )
       console.log('File uploaded successfully: ', response.data)
+
+      const document = response.data
+
+      try {
+        const response = await axios.post(
+          `${envConfig.ragUrl}/documents/index`,
+          document,
+        )
+        console.log('response', response.data)
+        setIsIndexingDone(true)
+      } catch (error) {
+        console.error('Error in indexing the file', error)
+        setIsIndexingDone(false)
+      }
       // Handle the response as needed
     } catch (error) {
       console.error('Error uploading file: ', error)
