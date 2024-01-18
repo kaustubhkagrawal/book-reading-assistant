@@ -1,26 +1,19 @@
 import { Button } from '@/components/ui/Button'
 import FileUpload from '@/components/ui/FileUpload'
-import { CALL_STATUS } from '@/lib/constants'
-import { useVapi } from '@/lib/hooks/useVapi'
-import { Inter } from 'next/font/google'
-import { ComponentProps, useEffect, useState } from 'react'
-import axios from 'axios'
-import { Controller, useForm } from 'react-hook-form'
 import { envConfig } from '@/config/env.config'
+import axios from 'axios'
+import { Inter } from 'next/font/google'
+import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+
+import { FileText, X } from 'lucide-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const buttonTextConfig = {
-  [CALL_STATUS.ACTIVE]: 'Stop',
-  [CALL_STATUS.LOADING]: 'Loading...',
-  [CALL_STATUS.INACTIVE]: 'Start',
-}
-
 export default function Home() {
   const [isIndexingDone, setIsIndexingDone] = useState(false)
-  const { isCallActive, audioLevel, activeTranscript, toggleCall } = useVapi()
 
-  const { control, register, handleSubmit } = useForm()
+  const { control, watch, setValue, handleSubmit } = useForm()
 
   const onSubmit = async (data: any) => {
     const formData = new FormData()
@@ -58,26 +51,11 @@ export default function Home() {
     }
   }
 
-  // const [audioLevel, setAudioLevel] = useState(0.123)
+  const file = watch('file')
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setAudioLevel(Math.random())
-  //   }, 1000)
-
-  //   return () => {
-  //     clearInterval(interval)
-  //   }
-  // }, [])
-
-  const shadowLevel = Math.floor(audioLevel / 0.1) as ComponentProps<
-    typeof Button
-  >['shadow']
-
-  console.log('audioLevel', audioLevel)
   return (
     <>
-      <div className="flex flex-wrap flex-col items-center justify-center min-h-screen">
+      <div className="flex flex-wrap flex-col items-center justify-center min-h-screen text-center">
         <h2 className="text-center w-full text-lg">Explore the Book</h2>
         <h1 className="text-center w-full text-3xl pb-3">
           20000 Leagues Under the Sea
@@ -87,30 +65,62 @@ export default function Home() {
           book. What is it about? Who is the author?
         </p>
 
-        <div className="p-4 max-w-96 text-center text-3xl text-cyan-900">
+        {/* <div className="p-4 max-w-96 text-center text-3xl text-cyan-900">
           {activeTranscript?.transcript ?? ''}
-        </div>
+        </div> */}
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <h1>File Upload</h1>
+        <form className="max-w-96 w-full" onSubmit={handleSubmit(onSubmit)}>
           <Controller
             name="file"
             control={control}
             render={({ field }) => <FileUpload {...field} />}
           />
-          <Button type="submit">Upload</Button>
+
+          {file ? (
+            <div className="flex gap-2 mb-4">
+              <FileText />
+              <span>{file.name}</span>
+
+              <button
+                className="ml-auto"
+                onClick={() => setValue('file', null)}
+              >
+                <X />
+              </button>
+            </div>
+          ) : null}
+          <Button variant={'default'} type="submit">
+            Upload
+          </Button>
         </form>
-        <Button
+        {/* <Button
           variant={
             isCallActive === CALL_STATUS.ACTIVE ? 'destructive' : 'success'
           }
           className={`w-20 h-20 rounded-full transition-all shadow-${shadowLevel}`}
           shadow={shadowLevel}
           disabled={isCallActive === CALL_STATUS.LOADING}
-          onClick={toggleCall}
+          onClick={onClick}
         >
           {buttonTextConfig[isCallActive]}
-        </Button>
+        </Button> */}
+        {/* <Button
+          asChild
+          className="rounded-full cursor-pointer group p-10 transition-all shadow-${shadowLevel} bg-transparent hover:bg-transparent"
+          variant={'ghost_shadow'}
+          shadow={shadowLevel}
+          disabled={isCallActive === CALL_STATUS.LOADING}
+          onClick={onClick}
+        >
+          <Lottie
+            animationData={ICONS_DATA[buttonState]}
+            style={{
+              width: buttonState === CALL_STATUS.LOADING ? 150 : 250,
+              height: buttonState === CALL_STATUS.LOADING ? 150 : 250,
+              margin: buttonState === CALL_STATUS.LOADING ? 50 : 0,
+            }}
+          />
+        </Button> */}
       </div>
     </>
   )
