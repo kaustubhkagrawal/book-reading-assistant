@@ -3,11 +3,11 @@ import { CALL_STATUS } from '@/lib/constants'
 import { useVapi } from '@/lib/hooks/useVapi'
 import Lottie from 'lottie-react'
 
+import ActiveIcon from '@/lib/lottie-icons/active_icon.json'
+import InactiveIcon from '@/lib/lottie-icons/inactive_icon.json'
+import LoadingIcon from '@/lib/lottie-icons/loading_icon.json'
 import { cn } from '@/lib/utils/utils'
 import { ClassValue } from 'class-variance-authority/types'
-import ActiveIcon from '../../../lottie-icons/active_icon.json'
-import InactiveIcon from '../../../lottie-icons/inactive_icon.json'
-import LoadingIcon from '../../../lottie-icons/loading_icon.json'
 
 const ICONS_DATA = {
   [CALL_STATUS.ACTIVE]: ActiveIcon,
