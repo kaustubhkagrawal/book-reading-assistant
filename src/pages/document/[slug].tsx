@@ -37,19 +37,19 @@ const DocumentConversation = () => {
   }
 
   return (
-    <div className="flex">
-      <PdfFocusProvider>
+    <PdfFocusProvider>
+      <div className="flex">
         <ViewPdf
           file={{
             url: document.url,
-            id: 'id_1',
+            id: document.id,
             color: DocumentColorEnum.blue,
-            fullName: 'Testing pdf demo',
+            fullName: 'Document',
           }}
         />
-      </PdfFocusProvider>
-      <Conversation docId={docId} />
-    </div>
+        <Conversation docId={docId} />
+      </div>
+    </PdfFocusProvider>
   )
 }
 

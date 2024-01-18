@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import type { CSSProperties } from 'react'
 
 import React, {
@@ -30,6 +31,8 @@ import 'react-pdf/dist/esm/Page/TextLayer.css'
 import { usePdfFocus } from '../../lib/context/pdf'
 // import { multiHighlight } from '../../utils/multi-line-highlight'
 import { PdfDocument } from '../../types/document.type'
+import debounce from 'lodash.debounce'
+import { multiHighlight } from '@/utils/multi-line-highlight'
 const pdfjsOptions = pdfjs.GlobalWorkerOptions
 const pdfjsVersion = pdfjs.version
 pdfjsOptions.workerSrc =
@@ -147,18 +150,18 @@ const PageRenderer: React.FC<PageRenderer> = ({
   //   debounce(() => {
   //     if (
   //       documentFocused &&
-  //       pdfFocusState.citation?.pageNumber === pageNumber + 1 &&
+  //       pdfFocusState.citation?.page_number === pageNumber + 1 &&
   //       !isHighlighted
   //     ) {
   //       multiHighlight(
-  //         pdfFocusState.citation.snippet,
+  //         pdfFocusState.citation.text,
   //         pageNumber,
   //         pdfFocusState.citation.color,
   //       )
   //       setIsHighlighted(true)
   //     }
   //   }, 50),
-  //   [pdfFocusState.citation?.snippet, pageNumber, isHighlighted],
+  //   [pdfFocusState.citation?.text, pageNumber, isHighlighted],
   // )
 
   return (

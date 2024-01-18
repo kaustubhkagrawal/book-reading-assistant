@@ -39,7 +39,7 @@ export const Conversation = memo(({ docId, ...props }: ConversationProps) => {
   console.log('messages', messages)
   return (
     <Card className="border-0 rounded-none shadow-none w-full relative">
-      <CardHeader>
+      <CardHeader className="shadow pb-4">
         <CardTitle>PDF Explorer</CardTitle>
         <CardDescription>Ask any questions about the Document.</CardDescription>
       </CardHeader>

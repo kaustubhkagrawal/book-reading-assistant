@@ -1,10 +1,10 @@
+import { Citation } from '@/types/document.type'
 import React, { createContext, useContext, useState } from 'react'
-// import type { Citation } from "~/types/conversation";
 
 interface PdfFocusState {
   documentId: string
   pageNumber: number
-  // citation?: Citation;
+  citation?: Citation
 }
 
 interface PdfFocusContextProps {
