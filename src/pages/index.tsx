@@ -6,19 +6,20 @@ import { Inter } from 'next/font/google'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { FileText, X } from 'lucide-react'
+import { FileText, Loader, Loader2, X } from 'lucide-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const [isIndexingDone, setIsIndexingDone] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { control, watch, setValue, handleSubmit } = useForm()
 
   const onSubmit = async (data: any) => {
     const formData = new FormData()
     formData.append('file', data.file)
-
+    setIsLoading(true)
     try {
       const response = await axios.post(
         `${envConfig.ragUrl}/documents/upload`,
@@ -40,13 +41,16 @@ export default function Home() {
         )
         console.log('response', response.data)
         setIsIndexingDone(true)
+        setIsLoading(false)
       } catch (error) {
         console.error('Error in indexing the file', error)
         setIsIndexingDone(false)
+        setIsLoading(false)
       }
       // Handle the response as needed
     } catch (error) {
       console.error('Error uploading file: ', error)
+      setIsLoading(false)
       // Handle the error as needed
     }
   }
@@ -56,18 +60,13 @@ export default function Home() {
   return (
     <>
       <div className="flex flex-wrap flex-col items-center justify-center min-h-screen text-center">
-        <h2 className="text-center w-full text-lg">Explore the Book</h2>
-        <h1 className="text-center w-full text-3xl pb-3">
-          20000 Leagues Under the Sea
+        <h1 className="text-center w-full text-4xl font-bold pb-5">
+          Chat with any PDF
         </h1>
         <p className="max-w-96 text-center pb-4 text-slate-600">
-          Ask any questions about this book. Like what is the content of the
-          book. What is it about? Who is the author?
+          Join millions of students, researchers and professionals to instantly
+          answer questions and understand research with AI
         </p>
-
-        {/* <div className="p-4 max-w-96 text-center text-3xl text-cyan-900">
-          {activeTranscript?.transcript ?? ''}
-        </div> */}
 
         <form className="max-w-96 w-full" onSubmit={handleSubmit(onSubmit)}>
           <Controller
@@ -89,7 +88,8 @@ export default function Home() {
               </button>
             </div>
           ) : null}
-          <Button variant={'default'} type="submit">
+          <Button variant={'default'} disabled={isLoading} type="submit">
+            {isLoading ? <Loader2 className="animate-spin mr-2 -ml-2" /> : null}
             Upload
           </Button>
         </form>
