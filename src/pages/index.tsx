@@ -6,7 +6,7 @@ import { Inter } from 'next/font/google'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { FileText, Loader, Loader2, X } from 'lucide-react'
+import { FileText, Loader2, X } from 'lucide-react'
 import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -98,34 +98,6 @@ export default function Home() {
             Upload
           </Button>
         </form>
-        {/* <Button
-          variant={
-            isCallActive === CALL_STATUS.ACTIVE ? 'destructive' : 'success'
-          }
-          className={`w-20 h-20 rounded-full transition-all shadow-${shadowLevel}`}
-          shadow={shadowLevel}
-          disabled={isCallActive === CALL_STATUS.LOADING}
-          onClick={onClick}
-        >
-          {buttonTextConfig[isCallActive]}
-        </Button> */}
-        {/* <Button
-          asChild
-          className="rounded-full cursor-pointer group p-10 transition-all shadow-${shadowLevel} bg-transparent hover:bg-transparent"
-          variant={'ghost_shadow'}
-          shadow={shadowLevel}
-          disabled={isCallActive === CALL_STATUS.LOADING}
-          onClick={onClick}
-        >
-          <Lottie
-            animationData={ICONS_DATA[buttonState]}
-            style={{
-              width: buttonState === CALL_STATUS.LOADING ? 150 : 250,
-              height: buttonState === CALL_STATUS.LOADING ? 150 : 250,
-              margin: buttonState === CALL_STATUS.LOADING ? 50 : 0,
-            }}
-          />
-        </Button> */}
       </div>
     </>
   )

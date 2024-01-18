@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import React from 'react'
 import { PdfFocusHandler } from '../../components/pdfViewer/VirtualizedPdf'
 import { PdfDocument } from '../../types/document.type'
-import { usePdfFocus } from '../context/pdf'
+import { usePdfFocus } from '../context/PdfContext'
 
 export const zoomLevels = ['50%', '80%', '100%', '130%', '200%', '300%', '400%']
 const startZoomLevelIdx = 2

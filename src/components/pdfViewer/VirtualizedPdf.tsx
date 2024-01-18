@@ -28,11 +28,9 @@ import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 import 'react-pdf/dist/esm/Page/TextLayer.css'
 
-import { usePdfFocus } from '../../lib/context/pdf'
+import { usePdfFocus } from '../../lib/context/PdfContext'
 // import { multiHighlight } from '../../utils/multi-line-highlight'
 import { PdfDocument } from '../../types/document.type'
-import debounce from 'lodash.debounce'
-import { multiHighlight } from '@/utils/multi-line-highlight'
 const pdfjsOptions = pdfjs.GlobalWorkerOptions
 const pdfjsVersion = pdfjs.version
 pdfjsOptions.workerSrc =

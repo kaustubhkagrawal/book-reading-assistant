@@ -1,14 +1,8 @@
-import { VapiButton } from '@/components/widgets/Conversation/VapiButton'
 import { ViewPdf } from '../components/pdfViewer/ViewPdf'
-import { PdfFocusProvider } from '../lib/context/pdf'
-import { DocumentColorEnum } from '../utils/colors'
-
-// const PdfViewerComp = dynamic(() => import('../components/pdfViewer/index'), {
-//   ssr: false,
-// })
+import { PdfFocusProvider } from '../lib/context/PdfContext'
+import { DocumentColorEnum } from '../lib/utils/colors'
 
 const PdfChat = () => {
-  // return <PdfViewerComp />
   return (
     <div className="flex">
       <PdfFocusProvider>
@@ -21,7 +15,6 @@ const PdfChat = () => {
           }}
         />
       </PdfFocusProvider>
-      {/* <VapiButton /> */}
     </div>
   )
 }
