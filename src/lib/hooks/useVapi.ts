@@ -131,15 +131,14 @@ export function useVapi({ onCallStart }: useVapiProps) {
   }, [onCallStart])
 
   const start = async (docId?: string) => {
-    const assistant = docId
-      ? await createAssistant({
-          name: 'document-reader-' + docId,
-          ...bookAssistant,
-        })
-      : null
+    const assistant = docId ? await createAssistant(docId) : null
     setIsCallActive(CALL_STATUS.LOADING)
     const response = vapi.start(
-      assistantId ? assistantId : assistant ? assistant.id : bookAssistant,
+      assistantId
+        ? assistantId
+        : assistant
+        ? assistant.assistant_id
+        : bookAssistant,
     )
 
     response.then((res) => {
