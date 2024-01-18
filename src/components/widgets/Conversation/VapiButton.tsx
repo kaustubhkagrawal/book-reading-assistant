@@ -25,10 +25,11 @@ const buttonTextConfig = {
 interface VapiButtonProps
   extends Pick<ReturnType<typeof useVapi>, 'isCallActive' | 'toggleCall'> {
   className?: ClassValue
+  docId: string
 }
 
 export function VapiButton(props: VapiButtonProps) {
-  const { isCallActive, toggleCall, ...restProps } = props
+  const { isCallActive, toggleCall, docId, ...restProps } = props
 
   return (
     <Button
@@ -38,7 +39,7 @@ export function VapiButton(props: VapiButtonProps) {
         restProps.className,
       ])}
       disabled={isCallActive === CALL_STATUS.LOADING}
-      onClick={toggleCall}
+      onClick={() => toggleCall(docId)}
     >
       <Lottie
         animationData={ICONS_DATA[isCallActive]}

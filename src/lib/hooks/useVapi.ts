@@ -11,6 +11,8 @@ import {
 } from '@/types/conversation.type'
 import debounce from 'lodash.debounce'
 import { MessageActionTypeEnum, useMessages } from './useMessages'
+import axios from 'axios'
+import { createAssistant } from '@/apis/vapi.api'
 
 interface useVapiProps {
   onCallStart: (vapi: Vapi) => void
@@ -23,6 +25,8 @@ export function useVapi({ onCallStart }: useVapiProps) {
   const [isCallActive, setIsCallActive] = useState<CALL_STATUS>(
     CALL_STATUS.INACTIVE,
   )
+
+  const [assistantId, setAssistantId] = useState('')
 
   // const [messages, setMessages] = useState<Message[]>([])
   const [messages, dispatch] = useReducer(useMessages, [
@@ -126,13 +130,23 @@ export function useVapi({ onCallStart }: useVapiProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onCallStart])
 
-  const start = () => {
+  const start = async (docId?: string) => {
+    const assistant = docId
+      ? await createAssistant({
+          name: 'document-reader-' + docId,
+          ...bookAssistant,
+        })
+      : null
     setIsCallActive(CALL_STATUS.LOADING)
-    const response = vapi.start(bookAssistant)
+    const response = vapi.start(
+      assistantId ? assistantId : assistant ? assistant.id : bookAssistant,
+    )
 
-    // const response = vapi.start('cdf809b4-693f-4b8c-a9df-a793e5858739')
     response.then((res) => {
       console.log({ res })
+      if (res?.id) {
+        setAssistantId(res?.id)
+      }
     })
   }
 
@@ -141,11 +155,11 @@ export function useVapi({ onCallStart }: useVapiProps) {
     vapi.stop()
   }
 
-  const toggleCall = () => {
+  const toggleCall = (docId: string) => {
     if (isCallActive == CALL_STATUS.ACTIVE) {
       stop()
     } else {
-      start()
+      start(docId)
     }
   }
 

@@ -3,6 +3,7 @@ import { Conversation } from '@/components/widgets/Conversation/Conversation'
 import { VapiButton } from '@/components/widgets/Conversation/VapiButton'
 import { envConfig } from '@/config/env.config'
 import { PdfFocusProvider } from '@/lib/context/pdf'
+import { getFilenameFromUrl } from '@/lib/utils'
 import { DocumentColorEnum } from '@/utils/colors'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -44,7 +45,7 @@ const DocumentConversation = () => {
             url: document.url,
             id: document.id,
             color: DocumentColorEnum.blue,
-            fullName: 'Document',
+            fullName: getFilenameFromUrl(document.url) ?? 'Document',
           }}
         />
         <Conversation docId={docId} />

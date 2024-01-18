@@ -10,10 +10,6 @@ type Data = {
 
 const ragUrl = process.env.NEXT_PUBLIC_RAG_URL ?? 'http://localhost:8000/api'
 
-const dictionary = {
-  checkDeliveryStatus: () => {},
-}
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,

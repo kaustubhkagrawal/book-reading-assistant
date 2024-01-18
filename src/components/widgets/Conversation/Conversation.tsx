@@ -54,7 +54,11 @@ export const Conversation = memo(({ docId, ...props }: ConversationProps) => {
         </ScrollArea>
       </CardContent>
       <CardFooter className="flex justify-center absolute bottom-0 left-0 right-0 p-0">
-        <VapiButton className="self-end" {...{ isCallActive, toggleCall }} />
+        <VapiButton
+          docId={docId}
+          className="self-end"
+          {...{ isCallActive, toggleCall }}
+        />
       </CardFooter>
     </Card>
   )
