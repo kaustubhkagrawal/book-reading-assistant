@@ -21,7 +21,7 @@ const PdfChat = () => {
           }}
         />
       </PdfFocusProvider>
-      <VapiButton />
+      {/* <VapiButton /> */}
     </div>
   )
 }
