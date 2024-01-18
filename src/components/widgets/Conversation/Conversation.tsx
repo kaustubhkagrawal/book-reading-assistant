@@ -18,18 +18,15 @@ interface ConversationProps {
 }
 
 export const Conversation = memo(({ docId, ...props }: ConversationProps) => {
-  const onCallStart = useCallback(
-    (vapi: Vapi) => {
-      vapi.send({
-        type: 'add-message',
-        message: {
-          role: 'system',
-          content: `Document Selected with Id: ${docId} and alias Document. Ask what user needs help for. NEVER READ DOCUMENT_ID to the USER`,
-        },
-      })
-    },
-    [docId],
-  )
+  const onCallStart = useCallback((vapi: Vapi) => {
+    // vapi.send({
+    //   type: 'add-message',
+    //   message: {
+    //     role: 'system',
+    //     content: `Document Selected with Id: ${docId} and alias Document. Ask what user needs help for. NEVER READ DOCUMENT_ID to the USER`,
+    //   },
+    // })
+  }, [])
 
   const { isCallActive, messages, audioLevel, activeTranscript, toggleCall } =
     useVapi({

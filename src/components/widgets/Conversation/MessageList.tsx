@@ -20,7 +20,9 @@ export function MessageList({ messages, activeTranscript }: MessageListProps) {
         message.type === MessageTypeEnum.TRANSCRIPT ? (
           <ConversationMessage
             message={
-              activeTranscript && activeTranscript.role === message.role
+              activeTranscript &&
+              activeTranscript.role === message.role &&
+              index === messages.length - 1
                 ? {
                     ...message,
                     transcript:

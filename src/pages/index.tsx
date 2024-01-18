@@ -66,7 +66,7 @@ export default function Home() {
     <>
       <div className="flex flex-wrap flex-col items-center justify-center min-h-screen text-center">
         <h1 className="text-center w-full text-4xl font-bold pb-5">
-          Chat with any PDF
+          Talk with any PDF
         </h1>
         <p className="max-w-96 text-center pb-4 text-slate-600">
           Join millions of students, researchers and professionals to instantly
