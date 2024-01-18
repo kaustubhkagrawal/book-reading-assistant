@@ -8,6 +8,11 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
+import { Inter } from 'next/font/google'
+import { cn } from '@/lib/utils/utils'
+
+const inter = Inter({ subsets: ['latin'] })
+
 const DocumentConversation = () => {
   const [document, setDocument] = useState<any>(null)
 
@@ -33,7 +38,7 @@ const DocumentConversation = () => {
 
   return (
     <PdfFocusProvider>
-      <div className="flex">
+      <div className={cn('flex', inter.className)}>
         <ViewPdf
           file={{
             url: document.url,

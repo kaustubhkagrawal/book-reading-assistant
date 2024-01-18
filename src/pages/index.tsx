@@ -2,17 +2,18 @@ import { Button } from '@/components/ui/Button'
 import FileUpload from '@/components/ui/FileUpload'
 import { envConfig } from '@/config/env.config'
 import axios from 'axios'
-import { Inter } from 'next/font/google'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { FileText, Loader2, X } from 'lucide-react'
 import { useRouter } from 'next/router'
 
+import { Inter } from 'next/font/google'
+import { cn } from '@/lib/utils/utils'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const [isIndexingDone, setIsIndexingDone] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
@@ -44,12 +45,10 @@ export default function Home() {
             document,
           )
           console.log('response', response.data)
-          setIsIndexingDone(true)
           setIsLoading(false)
           router.push(`/document/${document.id}`)
         } catch (error) {
           console.error('Error in indexing the file', error)
-          setIsIndexingDone(false)
           setIsLoading(false)
         }
       // Handle the response as needed
@@ -64,7 +63,12 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex flex-wrap flex-col items-center justify-center min-h-screen text-center">
+      <div
+        className={cn(
+          'flex flex-wrap flex-col items-center justify-center min-h-screen text-center',
+          inter.className,
+        )}
+      >
         <h1 className="text-center w-full text-4xl font-bold pb-5">
           Talk with any PDF
         </h1>

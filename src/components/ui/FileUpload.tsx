@@ -20,9 +20,6 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       accept: {
         'application/pdf': ['.pdf'],
-        'image/*': ['.png', '.jpg', '.jpeg', '.gif'],
-        'text/markdown': ['.md'],
-        'text/plain': ['.txt'],
       },
       onDrop,
       maxSize: 10000000, // 10 MB
