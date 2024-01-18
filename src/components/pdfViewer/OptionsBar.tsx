@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { ZoomIn, ZoomOut, ChevronUp, ChevronDown } from 'lucide-react'
 
 import { zoomLevels } from '../../lib/hooks/usePdf'
-import { PdfDocument } from '../../types/document.type'
+import { PdfDocument } from '../../lib/types/document.type'
 import { borderColors } from '../../lib/utils/colors'
 
 interface PDFOptionsBarProps {

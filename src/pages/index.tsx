@@ -1,15 +1,14 @@
 import { Button } from '@/components/ui/Button'
 import FileUpload from '@/components/ui/FileUpload'
-import { envConfig } from '@/config/env.config'
-import axios from 'axios'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { FileText, Loader2, X } from 'lucide-react'
 import { useRouter } from 'next/router'
 
-import { Inter } from 'next/font/google'
+import { indexDocument, uploadDocument } from '@/apis'
 import { cn } from '@/lib/utils/utils'
+import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,26 +24,14 @@ export default function Home() {
     formData.append('file', data.file)
     setIsLoading(true)
     try {
-      const response = await axios.post(
-        `${envConfig.ragUrl}/documents/upload`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      )
+      const response = await uploadDocument(formData)
       console.log('File uploaded successfully: ', response.data)
 
       const document = response.data
 
       if (document.url)
         try {
-          const response = await axios.post(
-            `${envConfig.ragUrl}/documents/index`,
-            document,
-          )
-          console.log('response', response.data)
+          await indexDocument(document)
           setIsLoading(false)
           router.push(`/document/${document.id}`)
         } catch (error) {

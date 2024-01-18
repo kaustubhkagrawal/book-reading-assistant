@@ -8,8 +8,9 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-import { Inter } from 'next/font/google'
 import { cn } from '@/lib/utils/utils'
+import { Inter } from 'next/font/google'
+import { fetchDocument } from '@/apis'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,9 +27,7 @@ const DocumentConversation = () => {
 
   useEffect(() => {
     if (docId) {
-      axios
-        .get(`${envConfig.ragUrl}/documents/${docId}`)
-        .then((response) => setDocument(response.data))
+      fetchDocument(docId).then((response) => setDocument(response.data))
     }
   }, [docId])
 

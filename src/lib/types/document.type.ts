@@ -1,4 +1,4 @@
-import { DocumentColorEnum } from '../lib/utils/colors'
+import { DocumentColorEnum } from '../utils/colors'
 
 export interface PdfDocument {
   id: string

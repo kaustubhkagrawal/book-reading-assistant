@@ -1,4 +1,7 @@
-import { MessageRoleEnum, TranscriptMessage } from '@/types/conversation.type'
+import {
+  MessageRoleEnum,
+  TranscriptMessage,
+} from '@/lib/types/conversation.type'
 
 interface ConversationMessageProps {
   message: TranscriptMessage

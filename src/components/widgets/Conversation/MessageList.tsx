@@ -2,7 +2,7 @@ import {
   Message,
   MessageTypeEnum,
   TranscriptMessage,
-} from '@/types/conversation.type'
+} from '@/lib/types/conversation.type'
 import React from 'react'
 import { ConversationMessage } from './ConversationMessage'
 import { CitationList } from './CitationList'

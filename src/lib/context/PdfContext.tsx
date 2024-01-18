@@ -1,4 +1,4 @@
-import { Citation } from '@/types/document.type'
+import { Citation } from '@/lib/types/document.type'
 import React, { createContext, useContext, useState } from 'react'
 
 interface PdfFocusState {

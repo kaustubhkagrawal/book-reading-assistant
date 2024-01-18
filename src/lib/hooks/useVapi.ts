@@ -1,4 +1,4 @@
-import { createAssistant } from '@/apis/vapi.api'
+import { createAssistant } from '@/apis'
 import { bookAssistant } from '@/assistants/book.assistant'
 import { envConfig } from '@/config/env.config'
 import {
@@ -6,7 +6,7 @@ import {
   MessageTypeEnum,
   TranscriptMessage,
   TranscriptMessageTypeEnum,
-} from '@/types/conversation.type'
+} from '@/lib/types/conversation.type'
 import Vapi from '@vapi-ai/web'
 import { useEffect, useReducer, useState } from 'react'
 import { CALL_STATUS } from '../constants'

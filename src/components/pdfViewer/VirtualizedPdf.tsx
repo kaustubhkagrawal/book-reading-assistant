@@ -30,7 +30,7 @@ import 'react-pdf/dist/esm/Page/TextLayer.css'
 
 import { usePdfFocus } from '../../lib/context/PdfContext'
 // import { multiHighlight } from '../../utils/multi-line-highlight'
-import { PdfDocument } from '../../types/document.type'
+import { PdfDocument } from '../../lib/types/document.type'
 const pdfjsOptions = pdfjs.GlobalWorkerOptions
 const pdfjsVersion = pdfjs.version
 pdfjsOptions.workerSrc =

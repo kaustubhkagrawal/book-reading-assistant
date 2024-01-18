@@ -3,7 +3,7 @@ import {
   MessageTypeEnum,
   TranscriptMessage,
   TranscriptMessageTypeEnum,
-} from '@/types/conversation.type'
+} from '@/lib/types/conversation.type'
 
 export enum MessageActionTypeEnum {
   UPDATE_LAST_MESSAGE = 'UPDATE_LAST_MESSAGE',
