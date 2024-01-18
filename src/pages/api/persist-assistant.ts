@@ -6,7 +6,28 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 const vapiUrl = process.env.NEXT_PUBLIC_VAPI_API_URL ?? 'https://api.vapi.ai'
 const vapiSecret = process.env.NEXT_PUBLIC_VAPI_NODE_TOKEN ?? ''
 
-export default async function handler(
+// CORS middleware wrapper
+const allowCors =
+  (fn: any) => async (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader(
+      'Access-Control-Allow-Methods',
+      'GET, OPTIONS, PATCH, DELETE, POST, PUT',
+    )
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+    )
+
+    if (req.method === 'OPTIONS') {
+      res.status(200).end()
+      return
+    }
+
+    return await fn(req, res)
+  }
+
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Assistant | { message: string }>,
 ) {
@@ -28,3 +49,5 @@ export default async function handler(
     return res.status(500).json({ message: 'Internal Server Error' })
   }
 }
+
+export default allowCors(handler)
